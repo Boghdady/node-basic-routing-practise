@@ -16,18 +16,27 @@ const url = require('url');
 // console.log('Will read file');
 
 // **** Server *****
+const overviewTemplate = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
+const productTemplate = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8');
+const cardTemplate = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
+
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
 const dataObj = JSON.parse(data);
 
 const server = http.createServer((req, res) => {
 	const urlPath = req.url;
+	// Overview Page
 	if (urlPath === '/' || urlPath === '/overview') {
-		res.end('Overview Page');
+		res.writeHead(200, { 'Content-type': 'text/html' });
+		res.end(overviewTemplate);
+		// Overview Page
 	} else if (urlPath === '/product') {
 		res.end('Products Page');
+		// API Page
 	} else if (urlPath === '/api') {
 		res.writeHead(200, { 'Content-type': 'application/json' });
 		res.end(data);
+		// Page not found
 	} else {
 		res.writeHead(404, {
 			'Content-type': 'text/html',
